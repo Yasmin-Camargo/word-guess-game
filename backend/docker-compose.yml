@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    container_name: "words-description-db"
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+      - "./src/main/resources/db/changelog/init.sql:/docker-entrypoint-initdb.d/1-init.sql"
+    environment:
+      - POSTGRES_DB=words-description-api
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - TZ=GMT
+    ports:
+      - "5432:5432"
+    restart: always
+networks:
+  app-network:
+    driver: bridge

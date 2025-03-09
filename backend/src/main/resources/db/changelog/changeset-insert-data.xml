@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2" author="yasmin">
+        <insert tableName="TB_WORDS">
+            <column name="word" value="saudade"/>
+            <column name="description" value="Sentimento profundo causado pela ausência de algo ou alguém que foi importante."/>
+            <column name="synonymous" value="nostalgia"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="felicidade"/>
+            <column name="description" value="Sentimento de alegria intensa, normalmente relacionado a momentos especiais."/>
+            <column name="synonymous" value="alegria"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="modesto"/>
+            <column name="description" value="Alguém que não exibe ou exagera suas conquistas ou qualidades."/>
+            <column name="synonymous" value="humilde"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="coragem"/>
+            <column name="description" value="A qualidade de alguém que enfrenta dificuldades ou perigos sem mostrar medo."/>
+            <column name="synonymous" value="bravura"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="curioso"/>
+            <column name="description" value="Pessoa que tem interesse em aprender ou descobrir coisas novas."/>
+            <column name="synonymous" value="inquisitivo"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sorriso"/>
+            <column name="description" value="Expressão facial que demonstra alegria ou satisfação."/>
+            <column name="synonymous" value="risada"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="gratidão"/>
+            <column name="description" value="Sentimento de reconhecimento por algo positivo recebido de alguém."/>
+            <column name="synonymous" value="reconhecimento"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sabedoria"/>
+            <column name="description" value="Capacidade de fazer julgamentos acertados baseados em conhecimento e experiência."/>
+            <column name="synonymous" value="conhecimento"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="amizade"/>
+            <column name="description" value="Relação de afeto e confiança entre pessoas."/>
+            <column name="synonymous" value="companheirismo"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="otimismo"/>
+            <column name="description" value="Tendência em ver o lado positivo das situações."/>
+            <column name="synonymous" value="positividade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="respeito"/>
+            <column name="description" value="Atitude de consideração e valorização pelo próximo."/>
+            <column name="synonymous" value="consideração"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="paixão"/>
+            <column name="description" value="Sentimento intenso de afeto ou entusiasmo por algo ou alguém."/>
+            <column name="synonymous" value="amor"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="caridade"/>
+            <column name="description" value="Atitude de ajudar o próximo de forma altruísta."/>
+            <column name="synonymous" value="solidariedade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="paciência"/>
+            <column name="description" value="Capacidade de tolerar e esperar sem se irritar."/>
+            <column name="synonymous" value="calma"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="generosidade"/>
+            <column name="description" value="Atitude de doar algo ou ajudar os outros de maneira desprendida."/>
+            <column name="synonymous" value="altruísmo"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="esperança"/>
+            <column name="description" value="Sentimento de acreditar que algo positivo acontecerá no futuro."/>
+            <column name="synonymous" value="fé"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="fidelidade"/>
+            <column name="description" value="Qualidade de ser leal a alguém ou algo, mantendo compromisso e confiança."/>
+            <column name="synonymous" value="lealdade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="empatia"/>
+            <column name="description" value="Capacidade de compreender e partilhar os sentimentos dos outros."/>
+            <column name="synonymous" value="compreensão"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="alegria"/>
+            <column name="description" value="Estado de ânimo em que alguém se sente feliz e contente."/>
+            <column name="synonymous" value="felicidade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="bondade"/>
+            <column name="description" value="Qualidade de ser gentil, generoso e compassivo."/>
+            <column name="synonymous" value="benevolência"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="inspiração"/>
+            <column name="description" value="Estimulação do intelecto ou das emoções para realizar algo."/>
+            <column name="synonymous" value="motivação"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="confiança"/>
+            <column name="description" value="Crença na capacidade ou integridade de alguém ou algo."/>
+            <column name="synonymous" value="segurança"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="honestidade"/>
+            <column name="description" value="Qualidade de ser verdadeiro, sincero e justo."/>
+            <column name="synonymous" value="integridade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="tolerância"/>
+            <column name="description" value="Disposição para aceitar as diferenças nos outros, sem preconceito."/>
+            <column name="synonymous" value="aceitação"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="mesa"/>
+            <column name="description" value="Móvel com superfície plana e suportes, usado para apoiar objetos, refeições ou para atividades como trabalho e estudo."/>
+            <column name="synonymous" value="tabuleiro"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="cadeira"/>
+            <column name="description" value="Móvel projetado para uma pessoa se sentar, geralmente com encosto e pernas."/>
+            <column name="synonymous" value="assento"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="computador"/>
+            <column name="description" value="Dispositivo eletrônico que processa informações e realiza cálculos, utilizado para diversas tarefas como trabalho, lazer e comunicação."/>
+            <column name="synonymous" value="máquina"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="livro"/>
+            <column name="description" value="Coleção de páginas escritas ou impressas encadernadas, utilizadas para leitura, estudo ou consulta."/>
+            <column name="synonymous" value="obra"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="caderno"/>
+            <column name="description" value="Conjunto de folhas de papel encadernadas, usadas para anotações, esboços ou registros."/>
+            <column name="synonymous" value="bloco"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="vaso"/>
+            <column name="description" value="Recipiente utilizado para conter flores ou plantas."/>
+            <column name="synonymous" value="jarro"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="bola"/>
+            <column name="description" value="Objeto esférico usado em diversos jogos e esportes."/>
+            <column name="synonymous" value="esfera"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="rua"/>
+            <column name="description" value="Via pública em áreas urbanas, destinada à circulação de veículos e pedestres."/>
+            <column name="synonymous" value="estrada"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="praia"/>
+            <column name="description" value="Área de areia ou seixos ao longo de um corpo d'água, frequentemente utilizada para lazer."/>
+            <column name="synonymous" value="costão"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="montanha"/>
+            <column name="description" value="Elevação natural do terreno, geralmente com altitude significativa em relação ao nível do mar."/>
+            <column name="synonymous" value="pico"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="cidade"/>
+            <column name="description" value="Área urbana com população significativa e infraestrutura desenvolvida."/>
+            <column name="synonymous" value="metrópole"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="vento"/>
+            <column name="description" value="Movimento do ar em diferentes direções, causado por variações na pressão atmosférica."/>
+            <column name="synonymous" value="brisa"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="luz"/>
+            <column name="description" value="Radiação que torna os objetos visíveis, consistindo em ondas eletromagnéticas."/>
+            <column name="synonymous" value="iluminação"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="caminho"/>
+            <column name="description" value="Rota ou trajetória a ser seguida para ir de um lugar a outro."/>
+            <column name="synonymous" value="trilha"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="estrela"/>
+            <column name="description" value="Corpo celeste que brilha no céu, composta principalmente por gases e que gera energia por fusão nuclear."/>
+            <column name="synonymous" value="astro"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="nuvem"/>
+            <column name="description" value="Agregados de gotas de água ou cristais de gelo suspensos na atmosfera."/>
+            <column name="synonymous" value="nebulosidade"/>
+            <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="cápsula"/>
+            <column name="description" value="Recipiente pequeno e fechado, usado para armazenar ou transportar medicamentos."/>
+            <column name="synonymous" value="recipiente"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="mistério"/>
+            <column name="description" value="Situação ou evento que é desconhecido ou difícil de entender."/>
+            <column name="synonymous" value="enigma"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="antídoto"/>
+            <column name="description" value="Substância que neutraliza o efeito de um veneno."/>
+            <column name="synonymous" value="cura"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="labirinto"/>
+            <column name="description" value="Estrutura complexa de caminhos que dificulta a saída."/>
+            <column name="synonymous" value="confusão"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sonho"/>
+            <column name="description" value="Série de imagens, ideias e sensações que ocorrem durante o sono."/>
+            <column name="synonymous" value="visão"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sarcófago"/>
+            <column name="description" value="Caixão de pedra ou outro material que abriga um corpo."/>
+            <column name="synonymous" value="sepultura"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="pecado"/>
+            <column name="description" value="Ação que vai contra normas morais ou religiosas."/>
+            <column name="synonymous" value="transgressão"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="paradoxo"/>
+            <column name="description" value="Declaração ou situação que parece contraditória, mas pode ser verdadeira."/>
+            <column name="synonymous" value="contradição"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="crucifixo"/>
+            <column name="description" value="Símbolo da crucificação de Jesus Cristo, geralmente representado como uma cruz."/>
+            <column name="synonymous" value="símbolo"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sabedoria"/>
+            <column name="description" value="Capacidade de tomar decisões acertadas com base em experiência e conhecimento."/>
+            <column name="synonymous" value="inteligência"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sussurro"/>
+            <column name="description" value="Fala muito baixa, quase inaudível."/>
+            <column name="synonymous" value="murro"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="alquimia"/>
+            <column name="description" value="Antiga prática que buscava transformar metais em ouro e encontrar o elixir da vida."/>
+            <column name="synonymous" value="transformação"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="metáfora"/>
+            <column name="description" value="Comparação implícita entre duas coisas diferentes, sem o uso de 'como'."/>
+            <column name="synonymous" value="analogia"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="efêmero"/>
+            <column name="description" value="Que dura por pouco tempo; transitório."/>
+            <column name="synonymous" value="temporário"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="reverência"/>
+            <column name="description" value="Sentimento profundo de respeito e admiração."/>
+            <column name="synonymous" value="veneração"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="paranoia"/>
+            <column name="description" value="Estado mental caracterizado por desconfiança excessiva."/>
+            <column name="synonymous" value="suspeita"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="insight"/>
+            <column name="description" value="Compreensão repentina e clara de uma situação ou problema."/>
+            <column name="synonymous" value="percepção"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="insight"/>
+            <column name="description" value="Compreensão repentina e clara de uma situação ou problema."/>
+            <column name="synonymous" value="visão"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="bifurcação"/>
+            <column name="description" value="Ponto onde algo se divide em dois caminhos."/>
+            <column name="synonymous" value="divisão"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="parábola"/>
+            <column name="description" value="Curva simétrica que representa uma seção cônica."/>
+            <column name="synonymous" value="curva"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="incisão"/>
+            <column name="description" value="Corte feito em um material, como a pele."/>
+            <column name="synonymous" value="corte"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="nostalgia"/>
+            <column name="description" value="Sentimento de saudade ou anseio por tempos passados."/>
+            <column name="synonymous" value="saudade"/>
+            <column name="level" value="2"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="algoritmo"/>
+            <column name="description" value="Conjunto de regras ou instruções para resolver um problema ou realizar uma tarefa."/>
+            <column name="synonymous" value="procedimento"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="banco de dados"/>
+            <column name="description" value="Conjunto organizado de dados que pode ser acessado e gerenciado."/>
+            <column name="synonymous" value="dados armazenados"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="criptografia"/>
+            <column name="description" value="Método de codificação de informações para garantir sua segurança."/>
+            <column name="synonymous" value="código seguro"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="interface"/>
+            <column name="description" value="Ponto de interação entre dois sistemas ou componentes."/>
+            <column name="synonymous" value="conexão"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="inteligência artificial"/>
+            <column name="description" value="Capacidade de máquinas de simular inteligência humana."/>
+            <column name="synonymous" value="machine learning"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="protocolos"/>
+            <column name="description" value="Conjunto de regras que definem a comunicação entre dispositivos."/>
+            <column name="synonymous" value="regras de comunicação"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="virtualização"/>
+            <column name="description" value="Criação de versões virtuais de recursos computacionais."/>
+            <column name="synonymous" value="simulação"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="front-end"/>
+            <column name="description" value="Parte de um aplicativo ou site que o usuário interage diretamente."/>
+            <column name="synonymous" value="interface do usuário"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="back-end"/>
+            <column name="description" value="Parte de um aplicativo que lida com o processamento de dados e lógica."/>
+            <column name="synonymous" value="servidor"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="aplicativo"/>
+            <column name="description" value="Programa de software projetado para executar uma função específica."/>
+            <column name="synonymous" value="software"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="sistemas operacionais"/>
+            <column name="description" value="Software que gerencia hardware e software em um dispositivo."/>
+            <column name="synonymous" value="OS"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="usabilidade"/>
+            <column name="description" value="Facilidade de uso de um sistema ou aplicativo."/>
+            <column name="synonymous" value="facilidade de uso"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="machine learning"/>
+            <column name="description" value="Ramo da inteligência artificial que permite que máquinas aprendam com dados."/>
+            <column name="synonymous" value="aprendizado de máquina"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="big data"/>
+            <column name="description" value="Conjunto de dados tão grande e complexo que requer tecnologias especiais para processamento."/>
+            <column name="synonymous" value="grande volume de dados"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="hardware"/>
+            <column name="description" value="Componentes físicos de um computador ou sistema."/>
+            <column name="synonymous" value="equipamento"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="software livre"/>
+            <column name="description" value="Software que pode ser utilizado, modificado e distribuído livremente."/>
+            <column name="synonymous" value="código aberto"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="firewall"/>
+            <column name="description" value="Sistema de segurança que controla o tráfego de entrada e saída de uma rede."/>
+            <column name="synonymous" value="parede de fogo"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="API"/>
+            <column name="description" value="Interface que permite que diferentes softwares se comuniquem entre si."/>
+            <column name="synonymous" value="Interface de Programação"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="blockchain"/>
+            <column name="description" value="Tecnologia que permite o registro seguro e transparente de transações."/>
+            <column name="synonymous" value="cadeia de blocos"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="bug"/>
+            <column name="description" value="Erro ou falha em um programa de software."/>
+            <column name="synonymous" value="defeito"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="cache"/>
+            <column name="description" value="Área de armazenamento temporário para aumentar a eficiência de acesso a dados."/>
+            <column name="synonymous" value="memória temporária"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="debugging"/>
+            <column name="description" value="Processo de identificar e corrigir bugs em um software."/>
+            <column name="synonymous" value="depuração"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="framework"/>
+            <column name="description" value="Conjunto de ferramentas e bibliotecas que facilitam o desenvolvimento de software."/>
+            <column name="synonymous" value="estrutura de trabalho"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="git"/>
+            <column name="description" value="Sistema de controle de versão usado para gerenciar alterações em projetos de software."/>
+            <column name="synonymous" value="sistema de versionamento"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="hacker"/>
+            <column name="description" value="Indivíduo que explora sistemas de computador, muitas vezes para fins não éticos."/>
+            <column name="synonymous" value="criminoso digital"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="malware"/>
+            <column name="description" value="Software projetado para causar danos a um computador ou rede."/>
+            <column name="synonymous" value="software malicioso"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="scripting"/>
+            <column name="description" value="Escrita de scripts para automatizar tarefas em um sistema."/>
+            <column name="synonymous" value="programação leve"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="terminal"/>
+            <column name="description" value="Interface de linha de comando para interação com o sistema operacional."/>
+            <column name="synonymous" value="linha de comando"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="UI"/>
+            <column name="description" value="Interface do Usuário, o espaço onde interações entre humanos e máquinas ocorrem."/>
+            <column name="synonymous" value="interface do usuário"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+        <insert tableName="TB_WORDS">
+            <column name="word" value="UX"/>
+            <column name="description" value="Experiência do Usuário, a percepção que um usuário tem ao interagir com um sistema."/>
+            <column name="synonymous" value="experiência do usuário"/>
+            <column name="level" value="tecnologia"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>
