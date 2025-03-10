@@ -5,6 +5,8 @@ import com.projetotabia.word_guess_game.dtos.GameStartDto;
 import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
 import org.springframework.stereotype.Service;
 
+import org.apache.commons.text.similarity.LevenshteinDistance;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -33,15 +35,17 @@ public class GameService {
     }
 
     public String checkWord(String word){
-        if (currentWord == null || currentWord == null || currentWord.isEmpty()) {
+        LevenshteinDistance levenshtein = new LevenshteinDistance();
+
+        if (currentWord == null || currentWord.isEmpty()) {
             return "O jogo não foi iniciado ainda.";
         }
 
         word = normalizeWord(word);
-        boolean victory = word.equals(normalizeWord(currentWord));
+        var distance = levenshtein.apply(word, currentWord);
         numberAttempts -= 1;
 
-        if (victory && numberAttempts >= 0) {
+        if (distance <= 1 && numberAttempts >= 0) {
             return "Parabéns! Você acertou!!! A palavra era " + currentWord + "!";
         }
         else if (numberAttempts == 0 || numberAttempts < 0){
