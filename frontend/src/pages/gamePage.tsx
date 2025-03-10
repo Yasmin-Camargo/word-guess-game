@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import { Box, Heading, Input, Button, Text, Stack, Card, CardBody, CardHeader, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 import { startGame, useCheckWord } from '../hooks/useGame';
-import WordForm from '../components/wordform';
-import { WordData } from '../interface/WordData';
+import GameConfigForm from '../components/gameConfigForm';
 import { useWordData } from '../hooks/useWordData';
-import { saveWord } from '../hooks/useGameForm'; 
-
+import { saveWord } from '../hooks/useGameForm';
+import { GameConfig } from '../interface/GameConfig';
 
 export const GamePage = () => {
   const [word, setWord] = useState(''); 
@@ -15,9 +14,11 @@ export const GamePage = () => {
   const [showHint, setShowHint] = useState(false);
   const [showDescription, setShowDescription] = useState(false); 
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { message, setMessage, finish, setFinish, checkWord } = useCheckWord(); 
 
   const handleStartGame = () => {
+    setLoading(true);
     startGame()
       .then(body => {
         setDescription(body.description);
@@ -30,6 +31,9 @@ export const GamePage = () => {
       })
       .catch(error => {
         console.error('Erro ao iniciar o jogo:', error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -53,9 +57,11 @@ export const GamePage = () => {
   const { data, refetch } = useWordData();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleSave = async (newWordData: WordData) => {
+  const handleSave = async (newGameConfig: GameConfig) => {
+    console.log("Salvando nova configuração do jogo:", newGameConfig); // Adicione este log
+  
     try {
-      await saveWord(newWordData);
+      await saveWord(newGameConfig);
       refetch();
     } catch (error) {
       console.error("Erro ao adicionar palavra:", error);
@@ -139,6 +145,7 @@ export const GamePage = () => {
         size="md" 
         onClick={isGameStarted ? handleCheckWord : handleStartGame} 
         mt={4}
+        isDisabled={loading}
       >
         {isGameStarted ? "Verificar" : "Sortear nova palavra"} 
       </Button>
@@ -148,7 +155,7 @@ export const GamePage = () => {
           Configurações
         </Button>
       </Flex>
-      <WordForm isOpen={isOpen} onClose={onClose} onSave={handleSave} />
+      <GameConfigForm isOpen={isOpen} onClose={onClose} onSave={handleSave} />
       <br />
     </Box>
   );

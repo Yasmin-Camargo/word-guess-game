@@ -31,9 +31,8 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.checkWord(word));
     }
 
-    @PutMapping("/config")
-    public ResponseEntity<Object> updateWord(
-            @PathVariable(value = "id") Long id,
+    @PostMapping("/config")
+    public ResponseEntity<Object> setConfigGame(
             @RequestBody @Valid GameConfigDto gameConfig) throws RemoteException {
         gameService.setGameConfig(gameConfig);
         return ResponseEntity.status(HttpStatus.OK).body("Configurations updated");

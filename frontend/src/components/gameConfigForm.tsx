@@ -15,34 +15,27 @@ import {
 } from '@chakra-ui/react';
 import { GameConfig } from '../interface/GameConfig'; 
 
-interface WordFormProps {
-  isOpen: boolean; 
-  onClose: () => void; 
-  onSave: (newGameConfig: GameConfig) => Promise<void>; 
+interface GameConfigFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (newGameConfig: GameConfig) => void;
 }
 
-const WordForm: React.FC<WordFormProps> = ({ isOpen, onClose, onSave }) => {
-  const [theme, setTheme] = useState('');
-  const [difficulty, setDifficulty] = useState('');
+const GameConfigForm: React.FC<GameConfigFormProps> = ({ isOpen, onClose, onSave }) => {
+  const [theme, setTheme] = useState('tecnologia');
+  const [difficulty, setDifficulty] = useState('1');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'theme') setTheme(value);
     if (name === 'difficulty') setDifficulty(value);
+    console.log('difficulty: ', difficulty);
   };
-
-
-  const resetForm = () => {
-    setTheme('');
-    setDifficulty('');
-  };
-
 
   const handleSubmit = async () => {
-    const newGameConfig: GameConfig = { theme, difficulty };
-    await onSave(newGameConfig); 
+    const newGameConfig: GameConfig = { difficulty, theme };
+    onSave(newGameConfig);
     onClose(); 
-    resetForm();
   };
 
   return (
@@ -68,9 +61,9 @@ const WordForm: React.FC<WordFormProps> = ({ isOpen, onClose, onSave }) => {
               value={difficulty}
               onChange={handleChange}
             >
-              <option value="1">Fácil</option> 
-              <option value="2">Médio</option>
-              <option value="3">Difícil</option>
+              <option value="Fácil">Fácil</option> 
+              <option value="Médio">Médio</option>
+              <option value="Difícil">Difícil</option>
             </Select>
           </FormControl>
         </ModalBody>
@@ -85,4 +78,4 @@ const WordForm: React.FC<WordFormProps> = ({ isOpen, onClose, onSave }) => {
   );
 };
 
-export default WordForm; 
+export default GameConfigForm; 

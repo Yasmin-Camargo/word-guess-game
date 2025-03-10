@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/words")
 public class WordsController {
 
-
-
     @PostMapping
     public ResponseEntity<WordsRecordDto> saveWord(@RequestBody @Valid WordsRecordDto wordsRecordDto) throws RemoteException {
         return ResponseEntity.status(HttpStatus.CREATED).body(wordsService().saveWord(wordsRecordDto));
