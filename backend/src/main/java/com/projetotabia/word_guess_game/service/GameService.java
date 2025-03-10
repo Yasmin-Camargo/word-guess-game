@@ -2,13 +2,17 @@ package com.projetotabia.word_guess_game.service;
 
 
 import com.projetotabia.word_guess_game.dtos.GameStartDto;
+import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
-import com.projetotabia.word_guess_game.dtos.promptRequestDto;
+import com.projetotabia.word_guess_game.dtos.GameConfigDto;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -18,31 +22,53 @@ import java.util.List;
 @Service
 public class GameService {
 
+    @Getter
     private String currentWord;
+
     private int numberAttempts;
+
+    @Setter
+    private GameConfigDto gameConfig;
+
+    public GameService() {
+        gameConfig = new GameConfigDto("Dificil", "Tecnologia");
+    }
 
     @Autowired
     private PromptExecutor promptExecutor;
 
     public GameStartDto startGame() throws RemoteException {
-        var request = new promptRequestDto("Dificil", "Tecnologia", List.of());
+        List<String> wordHistory = List.of();
 
         String prompt = "## Função\n" +
                 "Você está participando de um *jogo de adivinhação de palavras*! Sua tarefa é fornecer uma **palavra**, sua **definição** e dois **sinônimos**. \n" +
                 "\n" +
                 "## Regras\n" +
-                "- O nível de dificuldade deve ser: " + request.difficulty() + ".\n" +
-                "- A palavra deve pertencer ao tema: " + request.theme() + ".\n" +
-                "- Evite repetir palavras que já foram sorteadas: " + request.wordHistory() + ".\n" +
+                "- O nível de dificuldade deve ser: " + gameConfig.difficulty() + ".\n" +
+                "- A palavra deve pertencer ao tema: " + gameConfig.theme() + ".\n" +
+                "- Evite repetir palavras que já foram sorteadas: " + wordHistory + ".\n" +
+                "Formato de saida esperado:" +
+                "{\n" +
+                "  \"word\": \"example\",\n" +
+                "  \"description\": \"This is an example description.\",\n" +
+                "  \"synonymous1\": \"alternative1\",\n" +
+                "  \"synonymous2\": \"alternative2\"\n" +
+                "}" +
                 "\n" +
                 "> A definição deve ser objetiva, clara e precisa, **sem** mencionar a palavra nem seus sinônimos. \n" +
                 "> Certifique-se de que os sinônimos sejam termos com significados semelhantes e coerentes.";
 
-        var response = promptExecutor.execute(prompt, null);
+        PromptResponseDto response = null;
+        try {
+            response = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println(response);
 
-        currentWord = "teste";
-        GameStartDto gameStartDto = new GameStartDto("descrição teste", "sinonimo teste");
+        currentWord = response.word();
+        GameStartDto gameStartDto = new GameStartDto(response.description(), response.synonymous1());
         numberAttempts = 3;
 
         try {
@@ -80,15 +106,10 @@ public class GameService {
         }
     }
 
-    public String getCurrentWord(){
-        return currentWord;
-    }
-
     public String normalizeWord(String input) {
         String normalized = Normalizer.normalize(input.toLowerCase(), Normalizer.Form.NFD);
         return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("ç", "c").replaceAll("-", "");
     }
-
 
     private WordsServiceRemote getWordsService() throws RemoteException {
         try {

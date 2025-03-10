@@ -1,5 +1,6 @@
 package com.projetotabia.word_guess_game.service;
 
+import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
@@ -11,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 
 @Service
 public class PromptExecutor {
@@ -27,10 +29,12 @@ public class PromptExecutor {
         return OpenAiChatModel.builder()
                 .apiKey(apiKey)
                 .modelName(modelName)
+                .responseFormat("json_schema")
+                .strictJsonSchema(true)
                 .build();
     }
 
-    public @NotNull String execute(@NotNull String prompt, @Nullable String message) {
+    public @NotNull String execute(@NotNull String prompt, @Nullable String message) throws IOException {
         var model = createModel();
 
         ChatMemory memory = MessageWindowChatMemory.withMaxMessages(10);
