@@ -5,7 +5,6 @@ import com.projetotabia.word_guess_game.dtos.GameStartDto;
 import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
 import com.projetotabia.word_guess_game.dtos.GameConfigDto;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,25 +22,26 @@ import java.util.List;
 @Service
 public class GameService {
 
-    @Getter
-    private String currentWord;
-
-    private List<String> wordHistory;
-
+    private PromptResponseDto gameState;
+    private List<WordsRecordDto> wordHistory;
     private int numberAttempts;
 
     @Setter
     private GameConfigDto gameConfig;
 
     public GameService() {
-        gameConfig = new GameConfigDto("Dificil", "Tecnologia");
-        wordHistory = new ArrayList<>();;
+        gameConfig = new GameConfigDto("Fácil", "Tecnologia");
+        wordHistory = new ArrayList<>();
     }
 
     @Autowired
     private PromptExecutor promptExecutor;
 
     public GameStartDto startGame() throws RemoteException {
+        if (wordHistory.isEmpty()) {
+            wordHistory = getWordsService().getAllWords();
+        }
+
         System.out.println("Finding word for game");
         String prompt = "## Função\n" +
                 "Você está participando de um *jogo de adivinhação de palavras*! Sua tarefa é fornecer uma **palavra**, sua **definição** e dois **sinônimos**. \n" +
@@ -49,7 +49,7 @@ public class GameService {
                 "## Regras\n" +
                 "- O nível de dificuldade deve ser: " + gameConfig.difficulty() + ".\n" +
                 "- A palavra deve pertencer ao tema: " + gameConfig.theme() + ".\n" +
-                "- Evite repetir palavras que já foram sorteadas: " + wordHistory + ".\n" +
+                "- Evite repetir palavras que já foram sorteadas: " + wordHistory.stream().map(WordsRecordDto::word).toList() + ".\n" +
                 "Formato de saida esperado:" +
                 "{\n" +
                 "  \"word\": \"exemplo de palavra em português\",\n" +
@@ -61,47 +61,46 @@ public class GameService {
                 "> A definição deve ser objetiva, clara, precisa, **sem** mencionar a palavra nem seus sinônimos. \n" +
                 "> Certifique-se de que os sinônimos sejam termos com significados semelhantes e coerentes.";
 
-        PromptResponseDto response = null;
         try {
             System.out.println("Prompt: " + prompt);
-            response = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
+            gameState = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         System.out.println("Word Found");
-
-        currentWord = response.word();
-        GameStartDto gameStartDto = new GameStartDto(response.description(), response.synonymous1().concat(", " + response.synonymous2()));
         numberAttempts = 3;
 
-        try {
-            WordsServiceRemote wordsService = getWordsService();
-            WordsRecordDto wordsRecordDto = new WordsRecordDto(null, currentWord, gameStartDto.description(), gameStartDto.synonymous(), gameConfig.difficulty());
-            wordsService.saveWord(wordsRecordDto);
-            wordHistory.add(currentWord);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return gameStartDto;
+        return new GameStartDto(gameState.description(), gameState.synonymous1());
     }
 
     public String checkWord(String word){
+        Boolean isFinalGame = false;
         LevenshteinDistance levenshtein = new LevenshteinDistance();
 
-        if (currentWord == null || currentWord.isEmpty()) {
+        if (gameState.word() == null || gameState.word().isEmpty()) {
             return "O jogo não foi iniciado ainda.";
         }
 
         word = normalizeWord(word);
-        var distance = levenshtein.apply(word, currentWord);
+        var distance = levenshtein.apply(word, gameState.word());
         numberAttempts -= 1;
 
         if (distance <= 1 && numberAttempts >= 0) {
-            return "Parabéns! Você acertou!!! A palavra era " + currentWord + "!";
+            try {
+                saveWord();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            return "Parabéns! Você acertou!!! A palavra era " + gameState.word() + "!";
         }
-        else if (numberAttempts == 0 || numberAttempts < 0){
-            return "Suas tentativas acabaram. A palavra era: " + currentWord;
+        else if (numberAttempts == 0 || numberAttempts < 0) {
+            try {
+                saveWord();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            return "Suas tentativas acabaram. A palavra era: " + gameState.word();
         }
         else if (word.equals("showsynonymous")){
             return "Dica revelada. Restam " + numberAttempts + " tentativas.";
@@ -123,6 +122,17 @@ public class GameService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RemoteException("Failed to get WordsService", e);
+        }
+    }
+
+    private void saveWord() throws RemoteException {
+        try {
+            WordsServiceRemote wordsService = getWordsService();
+            WordsRecordDto wordsRecordDto = new WordsRecordDto(null, gameState.word(), gameState.description(), gameState.synonymous1().concat(", " + gameState.synonymous2()), gameConfig.difficulty());
+            wordsService.saveWord(wordsRecordDto);
+            wordHistory = getWordsService().getAllWords();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
