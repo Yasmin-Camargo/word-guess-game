@@ -23,7 +23,7 @@ interface GameConfigFormProps {
 
 const GameConfigForm: React.FC<GameConfigFormProps> = ({ isOpen, onClose, onSave }) => {
   const [theme, setTheme] = useState('tecnologia');
-  const [difficulty, setDifficulty] = useState('1');
+  const [difficulty, setDifficulty] = useState('Fácil');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
