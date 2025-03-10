@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class GameService {
     @Getter
     private String currentWord;
 
+    private List<String> wordHistory;
+
     private int numberAttempts;
 
     @Setter
@@ -32,14 +35,13 @@ public class GameService {
 
     public GameService() {
         gameConfig = new GameConfigDto("Dificil", "Tecnologia");
+        wordHistory = new ArrayList<>();;
     }
 
     @Autowired
     private PromptExecutor promptExecutor;
 
     public GameStartDto startGame() throws RemoteException {
-        List<String> wordHistory = List.of();
-
         String prompt = "## Função\n" +
                 "Você está participando de um *jogo de adivinhação de palavras*! Sua tarefa é fornecer uma **palavra**, sua **definição** e dois **sinônimos**. \n" +
                 "\n" +
@@ -75,6 +77,7 @@ public class GameService {
             WordsServiceRemote wordsService = getWordsService();
             WordsRecordDto wordsRecordDto = new WordsRecordDto(null, currentWord, "teste", "teste", "teste");
             wordsService.saveWord(wordsRecordDto);
+            wordHistory.add(currentWord);
         } catch (Exception e) {
             e.printStackTrace();
         }

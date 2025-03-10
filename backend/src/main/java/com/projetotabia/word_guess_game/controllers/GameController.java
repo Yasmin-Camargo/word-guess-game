@@ -27,7 +27,6 @@ public class GameController {
     @GetMapping("/check/{word}")
     public ResponseEntity<String> checkWord(
             @PathVariable(value = "word") String word) {
-
         return ResponseEntity.status(HttpStatus.OK).body(gameService.checkWord(word));
     }
 
@@ -35,6 +34,7 @@ public class GameController {
     public ResponseEntity<Object> setConfigGame(
             @RequestBody @Valid GameConfigDto gameConfig) throws RemoteException {
         gameService.setGameConfig(gameConfig);
+        System.out.println("Configurations updated: " + gameConfig);
         return ResponseEntity.status(HttpStatus.OK).body("Configurations updated");
     }
 
