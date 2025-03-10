@@ -46,6 +46,8 @@ export const GamePage = () => {
     // Resets the game state if the game is finished
     if (finish) {
       setIsGameStarted(false);
+      setShowDescription(false);
+      setDescription('');
     }
   }, [finish]);
 
@@ -130,14 +132,17 @@ export const GamePage = () => {
       </Flex>
 
       <Stack spacing={4} maxW="500px" mx="auto">
-        <Input
-          placeholder="Digite sua tentativa"
-          value={word}
-          onChange={(e) => setWord(e.target.value)}
-          color="black"
-          size='lg'
-          bg={"white"} 
-        />
+      {isGameStarted && (
+  <Input
+    placeholder="Digite sua tentativa"
+    value={word}
+    onChange={(e) => setWord(e.target.value)}
+    color="black"
+    size="lg"
+    bg="white"
+  />
+)}
+
       </Stack>
     
       <Button 
