@@ -42,6 +42,7 @@ public class GameService {
     private PromptExecutor promptExecutor;
 
     public GameStartDto startGame() throws RemoteException {
+        System.out.println("Finding word for game");
         String prompt = "## Função\n" +
                 "Você está participando de um *jogo de adivinhação de palavras*! Sua tarefa é fornecer uma **palavra**, sua **definição** e dois **sinônimos**. \n" +
                 "\n" +
@@ -51,31 +52,32 @@ public class GameService {
                 "- Evite repetir palavras que já foram sorteadas: " + wordHistory + ".\n" +
                 "Formato de saida esperado:" +
                 "{\n" +
-                "  \"word\": \"example\",\n" +
-                "  \"description\": \"This is an example description.\",\n" +
-                "  \"synonymous1\": \"alternative1\",\n" +
-                "  \"synonymous2\": \"alternative2\"\n" +
+                "  \"word\": \"exemplo de palavra em português\",\n" +
+                "  \"description\": \"Esse é um exemplo de descrição\",\n" +
+                "  \"synonymous1\": \"alternativa 1\",\n" +
+                "  \"synonymous2\": \"alternativa 2\"\n" +
                 "}" +
                 "\n" +
-                "> A definição deve ser objetiva, clara e precisa, **sem** mencionar a palavra nem seus sinônimos. \n" +
+                "> A definição deve ser objetiva, clara, precisa, **sem** mencionar a palavra nem seus sinônimos. \n" +
                 "> Certifique-se de que os sinônimos sejam termos com significados semelhantes e coerentes.";
 
         PromptResponseDto response = null;
         try {
+            System.out.println("Prompt: " + prompt);
             response = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println(response);
+        System.out.println("Word Found");
 
         currentWord = response.word();
-        GameStartDto gameStartDto = new GameStartDto(response.description(), response.synonymous1());
+        GameStartDto gameStartDto = new GameStartDto(response.description(), response.synonymous1().concat(", " + response.synonymous2()));
         numberAttempts = 3;
 
         try {
             WordsServiceRemote wordsService = getWordsService();
-            WordsRecordDto wordsRecordDto = new WordsRecordDto(null, currentWord, "teste", "teste", "teste");
+            WordsRecordDto wordsRecordDto = new WordsRecordDto(null, currentWord, gameStartDto.description(), gameStartDto.synonymous(), gameConfig.difficulty());
             wordsService.saveWord(wordsRecordDto);
             wordHistory.add(currentWord);
         } catch (Exception e) {

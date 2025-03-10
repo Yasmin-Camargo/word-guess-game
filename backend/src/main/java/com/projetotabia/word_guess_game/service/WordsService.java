@@ -33,6 +33,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public List<WordsRecordDto> getAllWords() throws RemoteException {
+        System.out.println("Searching for all words");
         return wordsRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -40,13 +41,15 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public WordsRecordDto getOneWord(Long id) throws RemoteException {
+        System.out.println("Searching for word");
         return wordsRepository.findById(id)
                 .map(this::convertToDto)
-                .orElse(null);  // Retorna null se não encontrar
+                .orElse(null);
     }
 
     @Override
     public WordsRecordDto updateWord(WordsRecordDto wordBefore, WordsRecordDto wordNew) throws RemoteException {
+        System.out.println("Updating word");
         WordsModel wordModel = new WordsModel();
         BeanUtils.copyProperties(wordBefore, wordModel);
         BeanUtils.copyProperties(wordNew, wordModel);
@@ -56,6 +59,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public void deleteWord(Long id) throws RemoteException {
+        System.out.println("Deleting word");
         wordsRepository.deleteById(id);
     }
 

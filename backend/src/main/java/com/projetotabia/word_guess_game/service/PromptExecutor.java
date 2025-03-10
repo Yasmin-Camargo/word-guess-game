@@ -1,6 +1,5 @@
 package com.projetotabia.word_guess_game.service;
 
-import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
