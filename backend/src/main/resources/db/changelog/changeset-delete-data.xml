@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/changeset-create-table.xml"/>
-    <include file="db/changelog/changeset-insert-data.xml"/>
-    <include file="db/changelog/changeset-set-not-null-columns.xml"/>
-    <include file="db/changelog/changeset-delete-data.xml"/>
+    <changeSet id="4" author="yasmin">
+        <delete tableName="TB_WORDS"/>
+    </changeSet>
+
 </databaseChangeLog>
