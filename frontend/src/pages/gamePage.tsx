@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Box, Heading, Input, Button, Text, Stack, Card, CardBody, CardHeader, Flex, HStack } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, Text, Stack, Card, CardBody, CardHeader, Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 import { startGame, useCheckWord } from '../hooks/useGame';
+import WordForm from '../components/wordform';
+import { WordData } from '../interface/WordData';
+import { useWordData } from '../hooks/useWordData';
+import { saveWord } from '../hooks/useGameForm'; 
 
-/**
- * GamePage component that manages the game interface and logic.
- * @returns {JSX.Element} The rendered GamePage component.
- */
+
 export const GamePage = () => {
   const [word, setWord] = useState(''); 
   const [description, setDescription] = useState(''); 
@@ -16,10 +17,6 @@ export const GamePage = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const { message, setMessage, finish, setFinish, checkWord } = useCheckWord(); 
 
-  /**
-   * Handles the start game action by calling the startGame function.
-   * Updates the component state with the game data upon success.
-   */
   const handleStartGame = () => {
     startGame()
       .then(body => {
@@ -36,10 +33,6 @@ export const GamePage = () => {
       });
   };
 
-  /**
-   * Handles the word checking action by calling the checkWord function
-   * and resets the input field.
-   */
   const handleCheckWord = () => {
     checkWord(word);
     setWord('');
@@ -52,14 +45,23 @@ export const GamePage = () => {
     }
   }, [finish]);
 
-  /**
-   * Displays the hint when the hint icon is clicked and checks the synonym word.
-   */
   const handleShowHint = () => {
     setShowHint(true);
     checkWord('showsynonymous');
   };
 
+  const { data, refetch } = useWordData();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSave = async (newWordData: WordData) => {
+    try {
+      await saveWord(newWordData);
+      refetch();
+    } catch (error) {
+      console.error("Erro ao adicionar palavra:", error);
+    }
+  };
+  
   return (
     <Box maxW="1280px" mx="auto" p={8} textAlign="center">
       <Heading 
@@ -140,6 +142,14 @@ export const GamePage = () => {
       >
         {isGameStarted ? "Verificar" : "Sortear nova palavra"} 
       </Button>
+
+      <Flex justify="flex-end" mb={4}>
+        <Button colorScheme="white" size="md" onClick={onOpen} leftIcon={<span style={{ fontSize: '1.5rem' }}>⚙️</span>}>
+          Configurações
+        </Button>
+      </Flex>
+      <WordForm isOpen={isOpen} onClose={onClose} onSave={handleSave} />
+      <br />
     </Box>
   );
 };

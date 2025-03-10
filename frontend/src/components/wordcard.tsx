@@ -17,12 +17,7 @@ interface CardProps {
   refetch: () => void; 
 }
 
-/**
- * Deletes a word by calling the removeWord function and refetches the data.
- * @param {WordData} wordData - The word data to be deleted.
- * @param {function} removeWord - The function to remove the word from the backend.
- * @param {function} refetch - The function to refetch the word data after deletion.
- */
+
 const deleteWord = async (wordData: WordData, removeWord: any, refetch: () => void) => {
   try {
     await removeWord(wordData.idWord);
@@ -32,19 +27,9 @@ const deleteWord = async (wordData: WordData, removeWord: any, refetch: () => vo
   }
 };
 
-/**
- * Card component that displays word data and provides options to edit or delete the word.
- * @param {CardProps} props - The props for the component.
- * @returns {JSX.Element} The rendered Card component.
- */
 export const Card = ({ wordData, refetch }: CardProps) => {  
   const { removeWord } = useRemoveWord();
 
-  /**
-   * Capitalizes the first letter of a string and converts the rest to lowercase.
-   * @param {string} text - The text to be capitalized.
-   * @returns {string} The capitalized string.
-   */
   const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 
   return (

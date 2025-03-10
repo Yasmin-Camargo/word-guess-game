@@ -4,11 +4,7 @@ import { GameData } from "../interface/GameData";
 
 const API_URL = "http://localhost:8080/game";
 
-/**
- * Starts the game by making a request to the backend.
- * @returns {Promise<GameData>} Returns a promise that resolves with the game data.
- * @throws {Error} Throws an error if the request fails.
- */
+
 export const startGame = (): Promise<GameData> => {
   return axios.get<GameData>(`${API_URL}/start`)
     .then(response => {
@@ -20,20 +16,11 @@ export const startGame = (): Promise<GameData> => {
     });
 };
 
-/**
- * Custom hook to check a word with the backend and update the application state.
- * @returns {Object} Returns an object containing the message, game finish status, and the function to check the word.
- */
 export const useCheckWord = () => {
   const [message, setMessage] = useState('');
   const [finish, setFinish] = useState(false);
 
-  /**
-   * Verifies if the entered word is correct by making a request to the backend.
-   * @param {string} word - The word to be checked.
-   * @returns {Promise<void>} Updates the game state and message based on the backend response.
-   * @throws {Error} Throws an error if the request fails.
-   */
+
   const checkWord = async (word: string) => {
     try {
       const response = await axios.get(`${API_URL}/check/${word}`);

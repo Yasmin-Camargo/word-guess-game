@@ -18,7 +18,7 @@ public class PromptExecutor {
     private final @NotNull String apiKey;
     private final @NotNull String modelName;
 
-    public PromptExecutor(@Value("demo") @NotNull String apiKey, @Value("gpt-4") @NotNull String modelName) {
+    public PromptExecutor(@Value("demo") @NotNull String apiKey, @Value("gpt-4o-mini") @NotNull String modelName) {
         this.apiKey = apiKey;
         this.modelName = modelName;
     }

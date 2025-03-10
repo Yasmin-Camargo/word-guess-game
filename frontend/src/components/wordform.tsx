@@ -13,97 +13,64 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { WordData } from '../interface/WordData'; 
+import { GameConfig } from '../interface/GameConfig'; 
 
 interface WordFormProps {
   isOpen: boolean; 
   onClose: () => void; 
-  onSave: (newWordData: WordData) => Promise<void>; 
+  onSave: (newGameConfig: GameConfig) => Promise<void>; 
 }
 
 const WordForm: React.FC<WordFormProps> = ({ isOpen, onClose, onSave }) => {
-  const [word, setWord] = useState('');
-  const [description, setDescription] = useState('');
-  const [synonymous, setSynonymous] = useState('');
-  const [level, setLevel] = useState('');
+  const [theme, setTheme] = useState('');
+  const [difficulty, setDifficulty] = useState('');
 
-  /**
-   * Handles input changes by updating the respective state variables.
-   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - The change event.
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (name === 'word') setWord(value);
-    if (name === 'description') setDescription(value);
-    if (name === 'synonymous') setSynonymous(value);
-    if (name === 'level') setLevel(value);
+    if (name === 'theme') setTheme(value);
+    if (name === 'difficulty') setDifficulty(value);
   };
 
-  /**
-   * Resets the form fields to their initial empty state.
-   */
+
   const resetForm = () => {
-    setWord('');
-    setDescription('');
-    setSynonymous('');
-    setLevel('');
+    setTheme('');
+    setDifficulty('');
   };
 
-  /**
-   * Handles the form submission by creating a new WordData object,
-   * saving it via the onSave function, and then closing the modal and resetting the form.
-   */
+
   const handleSubmit = async () => {
-    const newWordData: WordData = { word, description, synonymous, level };
-    await onSave(newWordData); 
+    const newGameConfig: GameConfig = { theme, difficulty };
+    await onSave(newGameConfig); 
     onClose(); 
     resetForm();
   };
 
   return (
-    <Modal initialFocusRef={React.useRef(null)} isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Adicionar nova palavra</ModalHeader> 
+        <ModalHeader>Configuração do sorteio da palavra</ModalHeader> 
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <FormControl isRequired>
-            <FormLabel>Palavra</FormLabel>
+          <FormControl isRequired mt={4}>
+            <FormLabel>Tema</FormLabel>
             <Input
-              name="word"
-              value={word}
+              name="theme"
+              value={theme}
               onChange={handleChange}
-              placeholder='Palavra para ser adivinhada' 
+              placeholder='Tema' 
             />
           </FormControl>
           <FormControl isRequired mt={4}>
-            <FormLabel>Descrição</FormLabel>
-            <Input
-              name="description"
-              value={description}
-              onChange={handleChange}
-              placeholder='Descrição da palavra' 
-            />
-          </FormControl>
-          <FormControl isRequired mt={4}>
-            <FormLabel>Dica</FormLabel>
-            <Input
-              name="synonymous"
-              value={synonymous}
-              onChange={handleChange}
-              placeholder='Dica (uma palavra)' 
-            />
-          </FormControl>
-          <FormControl isRequired mt={4}>
-            <FormLabel>Nível</FormLabel>
+            <FormLabel>Dificuldade da palavra</FormLabel>
             <Select
-              name="level"
-              value={level}
+              name="difficulty"
+              value={difficulty}
               onChange={handleChange}
-              placeholder='Selecione o nível' 
             >
-              <option value="1">1</option> 
-              <option value="2">2</option>
+              <option value="1">Fácil</option> 
+              <option value="2">Médio</option>
+              <option value="3">Difícil</option>
             </Select>
           </FormControl>
         </ModalBody>
