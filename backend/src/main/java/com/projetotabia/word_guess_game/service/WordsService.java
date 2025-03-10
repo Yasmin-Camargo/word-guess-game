@@ -24,7 +24,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public WordsRecordDto saveWord(WordsRecordDto wordsRecordDto) throws RemoteException {
-        System.out.println("Saving word");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Salvando palavra");
         var wordsModel = new WordsModel();
         BeanUtils.copyProperties(wordsRecordDto, wordsModel);
         WordsModel savedModel = wordsRepository.save(wordsModel);
@@ -33,7 +33,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public List<WordsRecordDto> getAllWords() throws RemoteException {
-        System.out.println("Searching for all words");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Buscando todas as palavras");
         return wordsRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public WordsRecordDto getOneWord(Long id) throws RemoteException {
-        System.out.println("Searching for word");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Buscando palavra");
         return wordsRepository.findById(id)
                 .map(this::convertToDto)
                 .orElse(null);
@@ -49,7 +49,7 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public WordsRecordDto updateWord(WordsRecordDto wordBefore, WordsRecordDto wordNew) throws RemoteException {
-        System.out.println("Updating word");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Atualizando palavra");
         WordsModel wordModel = new WordsModel();
         BeanUtils.copyProperties(wordBefore, wordModel);
         BeanUtils.copyProperties(wordNew, wordModel);
@@ -59,13 +59,13 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
 
     @Override
     public void deleteWord(Long id) throws RemoteException {
-        System.out.println("Deleting word");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Deletando palavra");
         wordsRepository.deleteById(id);
     }
 
     @Override
     public void teste(){
-        System.out.println("Teste");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [WordsService.java] Teste");
     }
 
     private WordsRecordDto convertToDto(WordsModel wordsModel) {
@@ -77,5 +77,4 @@ public class WordsService extends UnicastRemoteObject implements WordsServiceRem
                 wordsModel.getLevel()
         );
     }
-
 }

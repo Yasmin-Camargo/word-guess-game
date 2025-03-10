@@ -1,6 +1,5 @@
 package com.projetotabia.word_guess_game.service;
 
-
 import com.projetotabia.word_guess_game.dtos.GameStartDto;
 import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
@@ -18,6 +17,8 @@ import java.rmi.registry.Registry;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class GameService {
@@ -25,6 +26,7 @@ public class GameService {
     private PromptResponseDto gameState;
     private List<WordsRecordDto> wordHistory;
     private int numberAttempts;
+    private ThreadPoolExecutor executor;
 
     @Setter
     private GameConfigDto gameConfig;
@@ -32,6 +34,7 @@ public class GameService {
     public GameService() {
         gameConfig = new GameConfigDto("Fácil", "Tecnologia");
         wordHistory = new ArrayList<>();
+        executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
     }
 
     @Autowired
@@ -42,7 +45,6 @@ public class GameService {
             wordHistory = getWordsService().getAllWords();
         }
 
-        System.out.println("Finding word for game");
         String prompt = "## Função\n" +
                 "Você está participando de um *jogo de adivinhação de palavras*! Sua tarefa é fornecer uma **palavra**, sua **definição** e dois **sinônimos**. \n" +
                 "\n" +
@@ -62,13 +64,12 @@ public class GameService {
                 "> Certifique-se de que os sinônimos sejam termos com significados semelhantes e coerentes.";
 
         try {
-            System.out.println("Prompt: " + prompt);
             gameState = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Word Found");
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] GPT: Palavra foi selecionada");
         numberAttempts = 3;
 
         return new GameStartDto(gameState.description(), gameState.synonymous1());
@@ -88,7 +89,8 @@ public class GameService {
 
         if (distance <= 1 && numberAttempts >= 0) {
             try {
-                saveWord();
+                saveWordAsync();
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Partida finalizada");
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -96,7 +98,8 @@ public class GameService {
         }
         else if (numberAttempts == 0 || numberAttempts < 0) {
             try {
-                saveWord();
+                saveWordAsync();
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Partida finalizada");
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -125,14 +128,17 @@ public class GameService {
         }
     }
 
-    private void saveWord() throws RemoteException {
-        try {
-            WordsServiceRemote wordsService = getWordsService();
-            WordsRecordDto wordsRecordDto = new WordsRecordDto(null, gameState.word(), gameState.description(), gameState.synonymous1().concat(", " + gameState.synonymous2()), gameConfig.difficulty());
-            wordsService.saveWord(wordsRecordDto);
-            wordHistory = getWordsService().getAllWords();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void saveWordAsync() throws RemoteException {
+        executor.submit(() -> {
+            try {
+                WordsServiceRemote wordsService = getWordsService();
+                WordsRecordDto wordsRecordDto = new WordsRecordDto(null, gameState.word(), gameState.description(), gameState.synonymous1().concat(", " + gameState.synonymous2()), gameConfig.difficulty());
+                wordsService.saveWord(wordsRecordDto);
+                wordHistory = getWordsService().getAllWords();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: Palavra salva no banco de dados");
+        });
     }
 }
