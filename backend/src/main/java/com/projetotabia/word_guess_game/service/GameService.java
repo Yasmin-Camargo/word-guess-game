@@ -29,6 +29,7 @@ public class GameService {
     private List<WordsRecordDto> wordHistory;
     private int numberAttempts;
     private ThreadPoolExecutor executor;
+    private boolean showSynonymous;
 
     @Setter
     private GameConfigDto gameConfig;
@@ -37,6 +38,7 @@ public class GameService {
         gameConfig = new GameConfigDto("Fácil", "Tecnologia");
         wordHistory = new ArrayList<>();
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        showSynonymous = false;
     }
 
     @Autowired
@@ -74,7 +76,7 @@ public class GameService {
         System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] GPT: Palavra foi selecionada");
         numberAttempts = 3;
 
-        return new GameStartDto(gameState.description(), gameState.synonymous1());
+        return new GameStartDto(gameState.description(), gameState.synonymous2());
     }
 
     public String checkWord(String word){
@@ -85,8 +87,6 @@ public class GameService {
         word = normalizeWord(word);
         var distances = calculateLevenshteinAsync(word);
         numberAttempts -= 1;
-
-        System.out.println(gameState.synonymous1() + " " + gameState.synonymous2());
 
         if (Math.min(distances[0], Math.min(distances[1], distances[2])) <= 1 && numberAttempts >= 0) {
             try {
@@ -107,6 +107,7 @@ public class GameService {
             return "Suas tentativas acabaram. A palavra era: " + gameState.word();
         }
         else if (word.equals("showsynonymous")){
+            showSynonymous = true;
             return "Dica revelada. Restam " + numberAttempts + " tentativas.";
         }
         else {
@@ -145,9 +146,14 @@ public class GameService {
 
     public int[] calculateLevenshteinAsync(String word) {
         LevenshteinDistance levenshtein = new LevenshteinDistance();
-        CountDownLatch latch = new CountDownLatch(3);
-
         final int[] distances = new int[3];
+        CountDownLatch latch;
+        if (showSynonymous) {
+            distances[2] = 999;
+            latch = new CountDownLatch(2);
+        } else {
+            latch = new CountDownLatch(3);
+        }
 
         executor.submit(() -> {
             try {
@@ -167,14 +173,16 @@ public class GameService {
             }
         });
 
-        executor.submit(() -> {
-            try {
-                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: distância de Levenshtein para o sinônimo 2");
-                distances[2] = levenshtein.apply(normalizeWord(word), gameState.synonymous2());
-            } finally {
-                latch.countDown();
-            }
-        });
+        if (!showSynonymous) {
+            executor.submit(() -> {
+                try {
+                    System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: distância de Levenshtein para o sinônimo 2");
+                    distances[2] = levenshtein.apply(normalizeWord(word), gameState.synonymous2());
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
 
         Uninterruptibles.awaitUninterruptibly(latch);
 
