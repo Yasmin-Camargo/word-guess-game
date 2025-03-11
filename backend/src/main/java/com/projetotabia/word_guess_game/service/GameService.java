@@ -1,5 +1,6 @@
 package com.projetotabia.word_guess_game.service;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 import com.projetotabia.word_guess_game.dtos.GameStartDto;
 import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
 import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
@@ -17,6 +18,7 @@ import java.rmi.registry.Registry;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -76,18 +78,17 @@ public class GameService {
     }
 
     public String checkWord(String word){
-        Boolean isFinalGame = false;
-        LevenshteinDistance levenshtein = new LevenshteinDistance();
-
         if (gameState.word() == null || gameState.word().isEmpty()) {
             return "O jogo não foi iniciado ainda.";
         }
 
         word = normalizeWord(word);
-        var distance = levenshtein.apply(word, gameState.word());
+        var distances = calculateLevenshteinAsync(word);
         numberAttempts -= 1;
 
-        if (distance <= 1 && numberAttempts >= 0) {
+        System.out.println(gameState.synonymous1() + " " + gameState.synonymous2());
+
+        if (Math.min(distances[0], Math.min(distances[1], distances[2])) <= 1 && numberAttempts >= 0) {
             try {
                 saveWordAsync();
                 System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Partida finalizada");
@@ -140,5 +141,43 @@ public class GameService {
             }
             System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: Palavra salva no banco de dados");
         });
+    }
+
+    public int[] calculateLevenshteinAsync(String word) {
+        LevenshteinDistance levenshtein = new LevenshteinDistance();
+        CountDownLatch latch = new CountDownLatch(3);
+
+        final int[] distances = new int[3];
+
+        executor.submit(() -> {
+            try {
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: distância de Levenshtein para a palavra");
+                distances[0] = levenshtein.apply(normalizeWord(word), gameState.word());
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        executor.submit(() -> {
+            try {
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: distância de Levenshtein para o sinônimo 1");
+                distances[1] = levenshtein.apply(normalizeWord(word), gameState.synonymous1());
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        executor.submit(() -> {
+            try {
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Async: distância de Levenshtein para o sinônimo 2");
+                distances[2] = levenshtein.apply(normalizeWord(word), gameState.synonymous2());
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        Uninterruptibles.awaitUninterruptibly(latch);
+
+        return distances;
     }
 }
