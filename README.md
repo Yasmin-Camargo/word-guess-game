@@ -58,7 +58,7 @@ O jogo é desenvolvido utilizando **Java RMI (Remote Method Invocation)** e **Th
     ```
 
 2. Executar a aplicação Spring Boot:
-- Executar separadamente: Servidor das palavras, servidor do chatgpt e o jogo
+- Executar separadamente: Servidor das palavras (word_guess_game/WordsServer.java), servidor do chatgpt (word_guess_game/PromptExecutorServer.java) e o jogo (word_guess_game/WordGuessGameApplication.java)
 
 3. Executar `frontend`:
 - Execute a aplicação React dentro da pasta frontend:
