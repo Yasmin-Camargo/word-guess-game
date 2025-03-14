@@ -20,7 +20,7 @@ public class WordsServer {
             WordsServiceRemote wordsService = context.getBean(WordsServiceRemote.class);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("WordsService", wordsService);
-            System.out.println("RMI Server is running...");
+            System.out.println("RMI Server WordsService is running...");
         } catch (Exception e) {
             e.printStackTrace();
         }

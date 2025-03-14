@@ -41,9 +41,6 @@ public class GameService {
         showSynonymous = false;
     }
 
-    @Autowired
-    private PromptExecutor promptExecutor;
-
     public GameStartDto startGame() throws RemoteException {
         if (wordHistory.isEmpty()) {
             wordHistory = getWordsService().getAllWords();
@@ -68,9 +65,11 @@ public class GameService {
                 "> Certifique-se de que os sinônimos sejam termos com significados semelhantes e coerentes.";
 
         try {
-            gameState = PromptResponseDto.fromString(promptExecutor.execute(prompt, null));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            gameState = PromptResponseDto.fromString(getPromptExecutor().execute(prompt, null));
+        } catch (RemoteException e2) {
+            throw new RuntimeException(e2);
+        } catch (IOException e1) {
+            throw new RuntimeException(e1);
         }
 
         System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] GPT: Palavra foi selecionada");
@@ -127,6 +126,16 @@ public class GameService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RemoteException("Failed to get WordsService", e);
+        }
+    }
+
+    private PromptExecutorRemote getPromptExecutor() throws RemoteException {
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 2099);
+            return (PromptExecutorRemote) registry.lookup("PromptExecutor");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException("Failed to get PromptExecutor", e);
         }
     }
 

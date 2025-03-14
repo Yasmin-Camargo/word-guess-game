@@ -13,13 +13,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 @Service
-public class PromptExecutor {
+public class PromptExecutor extends UnicastRemoteObject implements PromptExecutorRemote {
     private final @NotNull String apiKey;
     private final @NotNull String modelName;
 
-    public PromptExecutor(@Value("demo") @NotNull String apiKey, @Value("gpt-4o-mini") @NotNull String modelName) {
+    public PromptExecutor(@Value("demo") @NotNull String apiKey, @Value("gpt-4o-mini") @NotNull String modelName) throws RemoteException {
+        super();
         this.apiKey = apiKey;
         this.modelName = modelName;
     }
@@ -33,7 +36,8 @@ public class PromptExecutor {
                 .build();
     }
 
-    public @NotNull String execute(@NotNull String prompt, @Nullable String message) throws IOException {
+    public @NotNull String execute(@NotNull String prompt, @Nullable String message) throws IOException, RemoteException {
+        System.out.println("[Thread" + Thread.currentThread().getId() + "] [PromptExecutor.java] Executando Prompt no " + modelName);
         var model = createModel();
 
         ChatMemory memory = MessageWindowChatMemory.withMaxMessages(10);
