@@ -50,3 +50,21 @@ O jogo é desenvolvido utilizando **Java RMI (Remote Method Invocation)** e **Th
 - **React para frontend** 🖌️
 
 
+## 🛠️ Como Executar
+
+1. Iniciar o banco de dados PostgreSQL usando Docker:
+    ```sh
+    docker-compose up -d
+    ```
+
+2. Executar a aplicação Spring Boot:
+- Executar separadamente: Servidor das palavras, servidor do chatgpt e o jogo
+
+3. Executar `frontend`:
+- Execute a aplicação React dentro da pasta frontend:
+    ```sh
+    npm start
+    ```
+
+
+
