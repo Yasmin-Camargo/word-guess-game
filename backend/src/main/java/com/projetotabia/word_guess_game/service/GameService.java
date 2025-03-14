@@ -1,10 +1,7 @@
 package com.projetotabia.word_guess_game.service;
 
 import com.google.common.util.concurrent.Uninterruptibles;
-import com.projetotabia.word_guess_game.dtos.GameStartDto;
-import com.projetotabia.word_guess_game.dtos.PromptResponseDto;
-import com.projetotabia.word_guess_game.dtos.WordsRecordDto;
-import com.projetotabia.word_guess_game.dtos.GameConfigDto;
+import com.projetotabia.word_guess_game.dtos.*;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +30,9 @@ public class GameService {
 
     @Setter
     private GameConfigDto gameConfig;
+
+    @Autowired
+    private Report reportService;
 
     public GameService() {
         gameConfig = new GameConfigDto("Fácil", "Tecnologia");
@@ -94,6 +94,7 @@ public class GameService {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
+            generateGameReportAsync();
             return "Parabéns! Você acertou!!! A palavra era " + gameState.word() + "!";
         }
         else if (numberAttempts == 0 || numberAttempts < 0) {
@@ -103,6 +104,7 @@ public class GameService {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
+            generateGameReportAsync();
             return "Suas tentativas acabaram. A palavra era: " + gameState.word();
         }
         else if (word.equals("showsynonymous")){
@@ -196,5 +198,19 @@ public class GameService {
         Uninterruptibles.awaitUninterruptibly(latch);
 
         return distances;
+    }
+
+    public void generateGameReportAsync() {
+        executor.submit(() -> {
+            try {
+                if (wordHistory.isEmpty()) {
+                    return;
+                }
+                System.out.println("[Thread" + Thread.currentThread().getId() + "] [GameService.java] Gerando relatório do jogo");
+                System.out.println(reportService.generateParallelReport(wordHistory));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
